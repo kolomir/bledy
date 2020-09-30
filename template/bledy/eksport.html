@@ -1,0 +1,64 @@
+{% extends 'bledy/base.html' %}
+{% load bootstrap %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="card col-md-6 my-3 mx-auto text-white unique-color">
+            <div class="card-body">
+                <h2>Eksport danych</h2>
+            </div>
+        </div>
+        <div class="card col-md-6 my-3 mx-auto">
+            <div class="card-body">
+
+                <form method="get">
+                    <div class="form-row mb-3">
+                        <div class="col md-form">
+                            <label class="control-label" for="id_nr_wiazki">Numer wiązki</label>
+                            <input id="id_nr_wiazki" class="form-control" type="search" name="nr_wiazki_contains" placeholder="Numer wiązki..." />
+                        </div>
+                        <div class="col md-form">
+                            <label class="control-label" for="id_nr_grupy_roboczej">Grupa robocza</label>
+                            <input id="id_nr_grupy_roboczej" class="form-control" type="search" name="nr_grupy_roboczej_contains" placeholder="Grupa robocza..." />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col md-form">
+                            <label class="control-label" for="id_nr_zlecenia">Zlecenie</label>
+                            <input id="id_nr_zlecenia" class="form-control" type="search" name="nr_zlecenia_contains" placeholder="Zlecenie..." />
+                        </div>
+                        <div class="col md-form">
+                            <label class="control-label" for="id_nr_kontrolera">Nr kontrolera</label>
+                            <input id="id_nr_kontrolera" class="form-control" type="search" name="nr_kontrolera_contains" placeholder="Nr kontrolera..." />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col md-form">
+                            <label class="control-label" for="id_nr_budujacego">Budujący</label>
+                            <input id="id_nr_budujacego" class="form-control" type="search" name="nr_budujacego_contains" placeholder="Budujący..." />
+                        </div>
+                        <div class="col md-form">
+                            <label class="control-label" for="id_blad">Błąd</label>
+                            <input id="id_blad" class="form-control" type="search" name="blad_contains" placeholder="Błąd..." />
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col md-form">
+                            <input type="date" class="form-control" id="data_od" name="data_od" placeholder="Data od"  />
+                        </div>
+                        <div class="col md-form">
+                            <input type="date" class="form-control" id="data_do" name="data_do" placeholder="Data do"  />
+                        </div>
+                    </div>
+                    <input type="hidden" id="eksport" name="eksport" value="on">
+                    <div class="form-row mb-3">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Zapisz</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
