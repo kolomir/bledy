@@ -690,4 +690,10 @@ def login_request(request):
     return render(request, "bledy/login.html", context)
 
 
+def logout_request(request):
+    logout(request)
+    messages.info(request, "Właśnie się wylogowałeś")
+    return redirect(wszystkie_wpisy)
+
+
 
