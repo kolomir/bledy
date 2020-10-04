@@ -5,7 +5,8 @@ from .views import wszystkie_wpisy, nowy_klient, edytuj_klient, wpisyKlient, usu
                 nowy_blad, edytuj_blad, wpisyBlad, usun_blad, przywroc_blad, \
                 nowa_wiazka, edytuj_wiazka, wpisyWiazka, usun_wiazke, przywroc_wiazke, \
                 nowy_pracownik, edytuj_pracownik, wpisyPracownik, usun_pracownik, przywroc_pracownik, \
-                nowy_blad_wpis, edytuj_blad_wpis, usun_blad_wpis, przywroc_blad_wpis, filtrowanie
+                nowy_blad_wpis, edytuj_blad_wpis, usun_blad_wpis, przywroc_blad_wpis, filtrowanie, \
+                login_request
 
 
 urlpatterns = [
@@ -57,6 +58,7 @@ urlpatterns = [
 
     #= Pozostałe ==========================================
     path('eksport/', filtrowanie, name='filtrowanie'),
+    path('login/', login_request, name='login'),
 
     #=TEST=================================================
 ]

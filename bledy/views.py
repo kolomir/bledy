@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import csv
 from datetime import datetime
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 
 
 def get_author(user):
@@ -662,6 +665,29 @@ def filtrowanie(request):
         'queryset': qs,
     }
     return render(request, 'bledy/eksport.html', context)
+
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info( request, f"Witaj {username}! Właśnie się zalogowałeś.")
+                return redirect("/")
+            else:
+                messages.error(request, f"Błędny login lub hasło")
+        else:
+            messages.error(request, f"- Błędny login lub hasło -")
+    form = AuthenticationForm()
+
+    context = {
+        "form": form
+    }
+    return render(request, "bledy/login.html", context)
 
 
 
