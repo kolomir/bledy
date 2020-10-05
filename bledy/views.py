@@ -320,7 +320,7 @@ def przywroc_blad(request, id):
     context = {
         'wpis': wpis
     }
-    return render(request, 'bledy/potwierdx_blad.html', context)
+    return render(request, 'bledy/potwierdz_blad.html', context)
 
 
 def wpisyBlad(request):
@@ -335,7 +335,7 @@ def wpisyBlad(request):
 @login_required
 def nowa_wiazka(request):
     form_wiazka = WiazkaForm(request.POST or None, request.FILES or None)
-    klient = Klient.objects.all().order_by('nazwa_klienta')
+    klient = Klient.objects.filter(aktywny=True).order_by('nazwa_klienta')
 
     if form_wiazka.is_valid():
         form_wiazka.save()
@@ -352,7 +352,7 @@ def nowa_wiazka(request):
 @login_required
 def edytuj_wiazka(request, id):
     wpis = get_object_or_404(Wiazka, pk=id)
-    klient = Klient.objects.all().order_by('nazwa_klienta')
+    klient = Klient.objects.filter(aktywny=True).order_by('nazwa_klienta')
 
     form_wiazka = WiazkaForm(request.POST or None, request.FILES or None, instance=wpis)
 
@@ -415,7 +415,7 @@ def wpisyWiazka(request):
 @login_required
 def nowy_pracownik(request):
     form_pracownik = PracownikForm(request.POST or None, request.FILES or None)
-    dzial = Dzial.objects.all().order_by('dzial')
+    dzial = Dzial.objects.filter(aktywny=True).order_by('dzial')
 
     if form_pracownik.is_valid():
         form_pracownik.save()
@@ -432,9 +432,9 @@ def nowy_pracownik(request):
 @login_required
 def edytuj_pracownik(request, id):
     wpis = get_object_or_404(Pracownik, pk=id)
-    dzial = Dzial.objects.all().order_by('dzial')
+    dzial = Dzial.objects.filter(aktywny=True).order_by('dzial')
     form_pracownik = PracownikForm(request.POST or None, request.FILES or None, instance=wpis)
-    print(form_pracownik)
+
     if form_pracownik.is_valid():
         form_pracownik.save()
         return redirect(wpisyPracownik)
@@ -494,10 +494,10 @@ def wpisyPracownik(request):
 @login_required
 def nowy_blad_wpis(request):
     form_blad_wpis = BledyForm(request.POST or None, request.FILES or None)
-    wiazka = Wiazka.objects.all().order_by('nazwa_wiazki')
-    grupa = GrupaRobocza.objects.all().order_by('nr_grupy')
-    budujacy = Pracownik.objects.all().order_by('nr_pracownika')
-    rodzajBledu = RodzajeBledu.objects.all().order_by('blad')
+    wiazka = Wiazka.objects.filter(aktywny=True).order_by('nazwa_wiazki')
+    grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
+    budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
+    rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
     rodzajReklamacji = RodzajReklamacji.objects.all().order_by('rodzaj')
 
     if form_blad_wpis.is_valid():
@@ -523,10 +523,10 @@ def edytuj_blad_wpis(request, id):
     wpis = get_object_or_404(Bledy, pk=id)
 
     wpisy = BledyForm(request.POST or None, request.FILES or None, instance=wpis)
-    wiazka = Wiazka.objects.all().order_by('nazwa_wiazki')
-    grupa = GrupaRobocza.objects.all().order_by('nr_grupy')
-    budujacy = Pracownik.objects.all().order_by('nr_pracownika')
-    rodzajBledu = RodzajeBledu.objects.all().order_by('blad')
+    wiazka = Wiazka.objects.filter(aktywny=True).order_by('nazwa_wiazki')
+    grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
+    budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
+    rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
     rodzajReklamacji = RodzajReklamacji.objects.all().order_by('rodzaj')
 
     if wpisy.is_valid():
