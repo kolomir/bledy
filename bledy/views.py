@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bledy, Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Autor, RodzajReklamacji
+from .models import Bledy, Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Autor, RodzajReklamacji, Csv
 from .forms import KlientForm, SkasowacKlienci, GrupaRoboczaForm, SkasowacGrupaRobocza, DzialForm, SkasowacDzial, \
-                BladForm, SkasowacBlad, WiazkaForm, SkasowacWiazka, PracownikForm, SkasowacPracownik, BledyForm, SkasowacBledy
+                BladForm, SkasowacBlad, WiazkaForm, SkasowacWiazka, PracownikForm, SkasowacPracownik, BledyForm, SkasowacBledy, CsvModelForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import csv
@@ -695,5 +695,40 @@ def logout_request(request):
     messages.info(request, "Właśnie się wylogowałeś")
     return redirect(wszystkie_wpisy)
 
+
+# -- TEST CSV ------------------------------------------------
+def upload_file_view(request):
+    form = CsvModelForm(request.POST or None, request.FILES or None)
+
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated = False)
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                else:
+                    row = "".join(row)
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    r_dzial = Dzial.objects.get(id=row[5])
+
+                    Pracownik.objects.create(
+                        nr_pracownika = int(row[1]),
+                        imie = row[2],
+                        nazwisko = row[3],
+                        dzial = r_dzial,
+                        zatrudniony = int(row[4]),
+                    )
+                    print(r_dzial)
+            obj.activated = True
+            obj.save()
+    context = {
+        "form": form
+    }
+    return render(request, 'bledy/form_upload.html', context)
 
 

@@ -6,7 +6,7 @@ from .views import wszystkie_wpisy, nowy_klient, edytuj_klient, wpisyKlient, usu
                 nowa_wiazka, edytuj_wiazka, wpisyWiazka, usun_wiazke, przywroc_wiazke, \
                 nowy_pracownik, edytuj_pracownik, wpisyPracownik, usun_pracownik, przywroc_pracownik, \
                 nowy_blad_wpis, edytuj_blad_wpis, usun_blad_wpis, przywroc_blad_wpis, filtrowanie, \
-                login_request, logout_request
+                login_request, logout_request, upload_file_view
 
 
 urlpatterns = [
@@ -60,6 +60,7 @@ urlpatterns = [
     path('eksport/', filtrowanie, name='filtrowanie'),
     path('login/', login_request, name='login'),
     path('logout/', logout_request, name='logout'),
+    path('upload/', upload_file_view, name='upload'),
 
     #=TEST=================================================
 ]

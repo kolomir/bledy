@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RodzajeBledu, GrupaRobocza, Klient, Wiazka, Dzial, Pracownik, Autor, Bledy, RodzajReklamacji
+from .models import RodzajeBledu, GrupaRobocza, Klient, Wiazka, Dzial, Pracownik, Autor, Bledy, RodzajReklamacji, Csv
 
 
 @admin.register(RodzajeBledu)
@@ -108,3 +108,8 @@ class BledyAdmin(admin.ModelAdmin):
             'data_dodania',
             'skasowany'
     )
+
+
+# -- TEST CSV ------------------------------------------------
+admin.site.register(Csv)
+

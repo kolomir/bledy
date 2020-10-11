@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Bledy
+from .models import Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Bledy, Csv
 
 
 #= KLIENCI =======================================================
@@ -132,5 +132,11 @@ class SkasowacBledy(ModelForm):
             'skasowany',
         ]
 
+
+# -- TEST CSV ------------------------------------------------
+class CsvModelForm(forms.ModelForm):
+    class Meta:
+        model = Csv
+        fields = ('file_name',)
 
 
