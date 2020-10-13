@@ -498,7 +498,6 @@ def nowy_blad_wpis(request):
     grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
     budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
     rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
-    rodzajReklamacji = RodzajReklamacji.objects.all().order_by('rodzaj')
 
     if form_blad_wpis.is_valid():
         autor = get_author(request.user)
@@ -511,8 +510,7 @@ def nowy_blad_wpis(request):
         'wiazka': wiazka,
         'grupa': grupa,
         'budujacy': budujacy,
-        'rodzajBledu': rodzajBledu,
-        'rodzajReklamacji': rodzajReklamacji
+        'rodzajBledu': rodzajBledu
     }
 
     return render(request, 'bledy/form_bledy_wpisy.html', context)
@@ -527,7 +525,6 @@ def edytuj_blad_wpis(request, id):
     grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
     budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
     rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
-    rodzajReklamacji = RodzajReklamacji.objects.all().order_by('rodzaj')
 
     if wpisy.is_valid():
         wpisy.save()
@@ -539,8 +536,7 @@ def edytuj_blad_wpis(request, id):
         'wiazka': wiazka,
         'grupa': grupa,
         'budujacy': budujacy,
-        'rodzajBledu': rodzajBledu,
-        'rodzajReklamacji': rodzajReklamacji
+        'rodzajBledu': rodzajBledu
     }
     #print('rodzajReklamacji:', wpisy.instance.rodzaj_reklamacji)
 
@@ -637,7 +633,6 @@ def filtrowanie(request):
                 'ilosc_skontrolowanych',
                 'ilosc_bledow',
                 'blad',
-                'rodzaj_reklamacji',
                 'autor_wpisu',
                 'data_dodania'
             ]
@@ -654,7 +649,6 @@ def filtrowanie(request):
                     obj.ilosc_skontrolowanych,
                     obj.ilosc_bledow,
                     obj.blad,
-                    obj.rodzaj_reklamacji,
                     obj.autor_wpisu,
                     obj.data_dodania
                 ]

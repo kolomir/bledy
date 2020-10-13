@@ -71,20 +71,6 @@
                             <label class="mdb-main-label">Rodzaj błędu</label>
                         </div>
                     </div>
-                    <div class="form-row mb-3">
-                        <div class="col">
-                            <select class="mdb-select md-form" name="rodzaj_reklamacji">
-                                <option value="{{ wpis.rodzaj_reklamacji_id }}" selected>{{ wpis.rodzaj_reklamacji }}</option>
-                                {% for result in rodzajReklamacji %}
-                                <option value="{{ result.id }}">{{ result.rodzaj }}</option>
-                                {% endfor %}
-                            </select>
-                            <label class="mdb-main-label">Rodzaj reklamacji</label>
-                        </div>
-                        <div class="col">
-
-                        </div>
-                    </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-outline-primary btn-rounded waves-effect">Zapisz <i class="fas fa-save fa-lg"></i></button>
                     </div>

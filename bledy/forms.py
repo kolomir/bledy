@@ -120,8 +120,7 @@ class BledyForm(ModelForm):
             'nr_budujacego',
             'ilosc_skontrolowanych',
             'ilosc_bledow',
-            'blad',
-            'rodzaj_reklamacji'
+            'blad'
         ]
 
 
