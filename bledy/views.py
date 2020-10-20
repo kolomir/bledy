@@ -19,7 +19,7 @@ def get_author(user):
 
 
 def wszystkie_wpisy(request):
-    wszystkie_wpisy = Bledy.objects.filter(skasowany=False).order_by('id').reverse()
+    wszystkie_wpisy = Bledy.objects.filter(skasowany=False).order_by('-id')[:200]
 
     context = {
         'wszystkie_wpisy': wszystkie_wpisy
@@ -587,7 +587,6 @@ def filtrowanie(request):
     nr_wiazki_contains_query = request.GET.get('nr_wiazki_contains')
     nr_grupy_roboczej_contains_query = request.GET.get('nr_grupy_roboczej_contains')
     nr_zlecenia_contains_query = request.GET.get('nr_zlecenia_contains')
-    nr_kontrolera_contains_query = request.GET.get('nr_kontrolera_contains')
     nr_budujacego_contains_query = request.GET.get('nr_budujacego_contains')
     blad_contains_query = request.GET.get('blad_contains')
     data_od = request.GET.get('data_od')
@@ -600,8 +599,6 @@ def filtrowanie(request):
         qs = qs.filter(nr_grupy_roboczej__icontains=nr_grupy_roboczej_contains_query)
     if is_valid_queryparam(nr_zlecenia_contains_query):
         qs = qs.filter(nr_zlecenia__icontains=nr_zlecenia_contains_query)
-    if is_valid_queryparam(nr_kontrolera_contains_query):
-        qs = qs.filter(nr_kontrolera__icontains=nr_kontrolera_contains_query)
     if is_valid_queryparam(nr_budujacego_contains_query):
         qs = qs.filter(nr_budujacego__icontains=nr_budujacego_contains_query)
     if is_valid_queryparam(blad_contains_query):
@@ -628,11 +625,11 @@ def filtrowanie(request):
                 'nr_wiazki',
                 'nr_grupy_roboczej',
                 'nr_zlecenia',
-                'nr_kontrolera',
                 'nr_budujacego',
                 'ilosc_skontrolowanych',
                 'ilosc_bledow',
                 'blad',
+                'opis',
                 'autor_wpisu',
                 'data_dodania'
             ]
@@ -649,6 +646,7 @@ def filtrowanie(request):
                     obj.ilosc_skontrolowanych,
                     obj.ilosc_bledow,
                     obj.blad,
+                    obj.opis,
                     obj.autor_wpisu,
                     obj.data_dodania
                 ]
