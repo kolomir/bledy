@@ -19,7 +19,7 @@ def get_author(user):
 
 
 def wszystkie_wpisy(request):
-    wszystkie_wpisy = Bledy.objects.filter(skasowany=False).order_by('-id')[:200]
+    wszystkie_wpisy = Bledy.objects.filter(skasowany=False).order_by('-id')[:300]
 
     context = {
         'wszystkie_wpisy': wszystkie_wpisy
@@ -706,16 +706,41 @@ def upload_file_view(request):
                     row = "".join(row)
                     row = row.replace(";", " ")
                     row = row.split()
-                    r_dzial = Dzial.objects.get(id=row[5])
+                    # - PRACOWNICY ------------------------------
+                    #r_dzial = Dzial.objects.get(id=row[3])
 
-                    Pracownik.objects.create(
-                        nr_pracownika = int(row[1]),
-                        imie = row[2],
-                        nazwisko = row[3],
-                        dzial = r_dzial,
-                        zatrudniony = int(row[4]),
+                    #Pracownik.objects.create(
+                    #    nr_pracownika = int(row[0]),
+                    #    imie = row[2],
+                    #    nazwisko = row[1],
+                    #    dzial = r_dzial,
+                    #    zatrudniony = 1,
+                    #)
+                    #print(r_dzial)
+                    # - KONIEC PRACOWNICY ------------------------------
+                    # =================================================
+                    # - KLIENCI ------------------------------
+                    #r_dzial = Dzial.objects.get(id=row[3])
+
+                    #Klient.objects.create(
+                    #    nazwa_klienta = row[1],
+                    #    aktywny = 1,
+                    #)
+                    #print(row[1])
+                    # - KONIEC KLIENCI ------------------------------
+                    # =================================================
+                    # - WIAZKI ------------------------------
+                    r_klient = Klient.objects.get(id=row[1])
+
+                    Wiazka.objects.create(
+                        nazwa_wiazki = row[0],
+                        nazwa_klienta = r_klient,
+                        aktywny = 1,
                     )
-                    print(r_dzial)
+                    print(row[0], row[1], " | ", r_klient)
+                    #print(row[0]," || ", row[1]," || ", row[3])
+                    # - KONIEC WIAZKI ------------------------------
+                    # =================================================
             obj.activated = True
             obj.save()
     context = {
