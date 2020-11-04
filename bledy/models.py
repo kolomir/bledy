@@ -88,7 +88,7 @@ class Bledy(models.Model):
 
     nr_wiazki = models.ForeignKey(Wiazka, on_delete=models.CASCADE, default=1) #
     nr_grupy_roboczej = models.ForeignKey(GrupaRobocza, on_delete=models.CASCADE, default=1) #
-    nr_zlecenia = models.DecimalField(max_digits=8, decimal_places=0) #
+    nr_zlecenia = models.CharField(max_length=20) #
     opis = models.TextField(blank=True, null=True)
     nr_kontrolera = models.DecimalField(max_digits=5, decimal_places=0, default=999, blank=True, null=True) #
     nr_budujacego = models.ForeignKey(Pracownik, on_delete=models.CASCADE, default=1) #
