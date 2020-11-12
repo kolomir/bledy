@@ -619,7 +619,7 @@ def filtrowanie(request):
 
         print(formatedDate)
 
-        writer = csv.writer(response)
+        writer = csv.writer(response, dialect='excel', delimiter=';')
         writer.writerow(
             [
                 'nr_wiazki',
@@ -641,7 +641,6 @@ def filtrowanie(request):
                     obj.nr_wiazki,
                     obj.nr_grupy_roboczej,
                     obj.nr_zlecenia,
-                    obj.nr_kontrolera,
                     obj.nr_budujacego,
                     obj.ilosc_skontrolowanych,
                     obj.ilosc_bledow,
