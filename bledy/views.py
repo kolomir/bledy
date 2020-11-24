@@ -589,20 +589,23 @@ def filtrowanie(request):
     nr_zlecenia_contains_query = request.GET.get('nr_zlecenia_contains')
     nr_budujacego_contains_query = request.GET.get('nr_budujacego_contains')
     blad_contains_query = request.GET.get('blad_contains')
+    klient_contains_query = request.GET.get('klient_contains')
     data_od = request.GET.get('data_od')
     data_do = request.GET.get('data_do')
     eksport = request.GET.get('eksport')
 
     if is_valid_queryparam(nr_wiazki_contains_query):
-        qs = qs.filter(nr_wiazki__icontains=nr_wiazki_contains_query)
+        qs = qs.filter(nr_wiazki__nazwa_wiazki__icontains=nr_wiazki_contains_query)
     if is_valid_queryparam(nr_grupy_roboczej_contains_query):
-        qs = qs.filter(nr_grupy_roboczej__icontains=nr_grupy_roboczej_contains_query)
+        qs = qs.filter(nr_grupy_roboczej__nr_grupy__icontains=nr_grupy_roboczej_contains_query)
     if is_valid_queryparam(nr_zlecenia_contains_query):
         qs = qs.filter(nr_zlecenia__icontains=nr_zlecenia_contains_query)
     if is_valid_queryparam(nr_budujacego_contains_query):
-        qs = qs.filter(nr_budujacego__icontains=nr_budujacego_contains_query)
+        qs = qs.filter(nr_budujacego__nr_pracownika__exact=nr_budujacego_contains_query)
     if is_valid_queryparam(blad_contains_query):
-        qs = qs.filter(blad__icontains=blad_contains_query)
+        qs = qs.filter(blad__blad__icontains=blad_contains_query)
+    if is_valid_queryparam(klient_contains_query):
+        qs = qs.select_related('nr_wiazki').filter(nr_wiazki__nazwa_klienta__nazwa_klienta__icontains=klient_contains_query)
     if is_valid_queryparam(data_od):
         qs = qs.filter(data_dodania__gte=data_od)
     if is_valid_queryparam(data_do):
@@ -658,6 +661,7 @@ def filtrowanie(request):
     return render(request, 'bledy/eksport.html', context)
 
 
+
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -688,6 +692,7 @@ def logout_request(request):
 
 
 # -- TEST CSV ------------------------------------------------
+
 def upload_file_view(request):
     form = CsvModelForm(request.POST or None, request.FILES or None)
 
@@ -729,14 +734,14 @@ def upload_file_view(request):
                     # - KONIEC KLIENCI ------------------------------
                     # =================================================
                     # - WIAZKI ------------------------------
-                    r_klient = Klient.objects.get(id=row[1])
+                    #r_klient = Klient.objects.get(id=row[1])
 
-                    Wiazka.objects.create(
-                        nazwa_wiazki = row[0],
-                        nazwa_klienta = r_klient,
-                        aktywny = 1,
-                    )
-                    print(row[0], row[1], " | ", r_klient)
+                    #Wiazka.objects.create(
+                    #    nazwa_wiazki = row[0],
+                    #    nazwa_klienta = r_klient,
+                    #    aktywny = 1,
+                    #)
+                    #print(row[0], row[1], " | ", r_klient)
                     #print(row[0]," || ", row[1]," || ", row[3])
                     # - KONIEC WIAZKI ------------------------------
                     # =================================================

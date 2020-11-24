@@ -27,7 +27,7 @@ class KlientAdmin(admin.ModelAdmin):
 class WiazkaAdmin(admin.ModelAdmin):
     list_display = ('nazwa_wiazki', 'nazwa_klienta', 'aktywny')
     list_filter = ('nazwa_klienta', 'aktywny')
-    search_fields = ('nazwa_wiazki', 'nazwa_klienta', 'aktywny')
+    search_fields = ('nazwa_wiazki', 'nazwa_klienta__nazwa_klienta', 'aktywny')
 
 
 @admin.register(Dzial)
@@ -41,7 +41,7 @@ class DzialAdmin(admin.ModelAdmin):
 class PracownikAdmin(admin.ModelAdmin):
     list_display = ('nr_pracownika', 'imie', 'nazwisko', 'dzial', 'zatrudniony')
     list_filter = ('dzial', 'zatrudniony')
-    search_fields = ('nr_pracownika', 'imie', 'nazwisko', 'dzial', 'zatrudniony')
+    search_fields = ('nr_pracownika', 'imie', 'nazwisko', 'dzial__dzial', 'zatrudniony')
 
 
 @admin.register(RodzajReklamacji)
@@ -55,7 +55,6 @@ class RodzajReklamacji(admin.ModelAdmin):
 class AutorAdmin(admin.ModelAdmin):
     list_display = ('user', 'dzial')
     list_filter = ('dzial',)
-    search_fields = ('user', 'dzial')
 
 
 @admin.register(Bledy)
@@ -81,17 +80,14 @@ class BledyAdmin(admin.ModelAdmin):
             'skasowany'
     )
     search_fields = (
-            'nr_wiazki',
-            'nr_grupy_roboczej',
+            'nr_wiazki__nazwa_wiazki',
+            'nr_grupy_roboczej__nr_grupy',
             'nr_zlecenia',
             'nr_kontrolera',
-            'nr_budujacego',
+            'nr_budujacego__nr_pracownika',
             'ilosc_skontrolowanych',
             'ilosc_bledow',
-            'blad',
-            'autor_wpisu',
-            'komputer_user',
-            'komputer',
+            'blad__blad',
             'data_dodania',
             'skasowany'
     )
