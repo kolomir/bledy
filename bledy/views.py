@@ -498,6 +498,12 @@ def nowy_blad_wpis(request):
     grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
     budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
     rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
+    moja_Data = datetime.now()
+    #data_dodania = datetime.now()
+    #data_dodania = datetime.now()
+    data_dodania = moja_Data.strftime("%Y-%m-%d")
+    #print('moja_Data: ', moja_Data)
+    print('data_dodania: ', data_dodania)
 
     if form_blad_wpis.is_valid():
         autor = get_author(request.user)
@@ -510,7 +516,8 @@ def nowy_blad_wpis(request):
         'wiazka': wiazka,
         'grupa': grupa,
         'budujacy': budujacy,
-        'rodzajBledu': rodzajBledu
+        'rodzajBledu': rodzajBledu,
+        'data_dodania': data_dodania
     }
 
     return render(request, 'bledy/form_bledy_wpisy.html', context)
@@ -594,6 +601,9 @@ def filtrowanie(request):
     data_do = request.GET.get('data_do')
     eksport = request.GET.get('eksport')
 
+    print('data_od', data_od)
+    print('data_do', data_do)
+
     if is_valid_queryparam(nr_wiazki_contains_query):
         qs = qs.filter(nr_wiazki__nazwa_wiazki__icontains=nr_wiazki_contains_query)
     if is_valid_queryparam(nr_grupy_roboczej_contains_query):
@@ -607,9 +617,9 @@ def filtrowanie(request):
     if is_valid_queryparam(klient_contains_query):
         qs = qs.select_related('nr_wiazki').filter(nr_wiazki__nazwa_klienta__nazwa_klienta__icontains=klient_contains_query)
     if is_valid_queryparam(data_od):
-        qs = qs.filter(data_dodania__gte=data_od)
+        qs = qs.filter(data_dodania__gte=data_od + ' 00:00:00')
     if is_valid_queryparam(data_do):
-        qs = qs.filter(data_dodania__lt=data_do)
+        qs = qs.filter(data_dodania__lt=data_do + ' 23:59:59')
 
     if eksport == 'on':
 
@@ -617,10 +627,10 @@ def filtrowanie(request):
         response['Content-Disposition'] = 'attachment; filename="eksport.csv"'
         response.write(u'\ufeff'.encode('utf8'))
 
-        mojaData = datetime.now()
-        formatedDate = mojaData.strftime("%Y-%m-%d")
+        #mojaData = datetime.now()
+        #formatedDate = mojaData.strftime("%Y-%m-%d")
 
-        print(formatedDate)
+        #print(formatedDate)
 
         writer = csv.writer(response, dialect='excel', delimiter=';')
         writer.writerow(

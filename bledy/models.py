@@ -99,7 +99,7 @@ class Bledy(models.Model):
     autor_wpisu = models.ForeignKey(Autor, on_delete=models.CASCADE)
     komputer_user = models.CharField(max_length=10, default=login_username)
     komputer = models.CharField(max_length=30, default=hostname)
-    data_dodania = models.DateField('data dodania', default=formatedDate)
+    data_dodania = models.DateTimeField('data dodania', blank=True, null=True)
     skasowany = models.BooleanField(default=False)
 
     def __str__(self):

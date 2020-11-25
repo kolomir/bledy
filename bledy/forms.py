@@ -121,7 +121,8 @@ class BledyForm(ModelForm):
             'ilosc_skontrolowanych',
             'ilosc_bledow',
             'blad',
-            'opis'
+            'opis',
+            'data_dodania'
         ]
 
 
