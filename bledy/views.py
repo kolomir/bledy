@@ -636,9 +636,11 @@ def filtrowanie(request):
         writer.writerow(
             [
                 'nr_wiazki',
+                'Klient',
                 'nr_grupy_roboczej',
                 'nr_zlecenia',
                 'nr_budujacego',
+                'budujacy',
                 'ilosc_skontrolowanych',
                 'ilosc_bledow',
                 'blad',
@@ -649,12 +651,15 @@ def filtrowanie(request):
         )
 
         for obj in qs:
+            budujacy = "{} {}".format(obj.nr_budujacego.nazwisko, obj.nr_budujacego.imie)
             writer.writerow(
                 [
                     obj.nr_wiazki,
+                    obj.nr_wiazki.nazwa_klienta,
                     obj.nr_grupy_roboczej,
                     obj.nr_zlecenia,
                     obj.nr_budujacego,
+                    budujacy,
                     obj.ilosc_skontrolowanych,
                     obj.ilosc_bledow,
                     obj.blad,
