@@ -532,6 +532,8 @@ def edytuj_blad_wpis(request, id):
     grupa = GrupaRobocza.objects.filter(aktywna=True).order_by('nr_grupy')
     budujacy = Pracownik.objects.filter(zatrudniony=True).order_by('nr_pracownika')
     rodzajBledu = RodzajeBledu.objects.filter(aktywny=True).order_by('blad')
+    moja_Data = datetime.now()
+    data_dodania = moja_Data.strftime("%Y-%m-%d")
 
     if wpisy.is_valid():
         wpisy.save()
@@ -543,7 +545,8 @@ def edytuj_blad_wpis(request, id):
         'wiazka': wiazka,
         'grupa': grupa,
         'budujacy': budujacy,
-        'rodzajBledu': rodzajBledu
+        'rodzajBledu': rodzajBledu,
+        'data_dodania': data_dodania
     }
     #print('rodzajReklamacji:', wpisy.instance.rodzaj_reklamacji)
 
