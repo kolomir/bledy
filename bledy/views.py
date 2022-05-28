@@ -593,7 +593,8 @@ def is_valid_queryparam(param):
 
 @login_required
 def filtrowanie(request):
-    qs = Bledy.objects.all()
+    #qs = Bledy.objects.all()
+    qs = Bledy.objects.filter(skasowany=False)
     nr_wiazki_contains_query = request.GET.get('nr_wiazki_contains')
     nr_grupy_roboczej_contains_query = request.GET.get('nr_grupy_roboczej_contains')
     nr_zlecenia_contains_query = request.GET.get('nr_zlecenia_contains')
