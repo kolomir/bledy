@@ -16,6 +16,7 @@
                     <tr>
                         <th class="th-sm" width="10%">#</th>
                         <th class="th-sm">Błąd</th>
+                        <th class="th-sm">Grupa</th>
                         {% if user.is_authenticated %}
                         <th class="th-sm" width="30%">#</th>
                         {% endif %}
@@ -26,6 +27,7 @@
                     <tr>
                         <th scope="row">{{ wpis.id }}</th>
                         <td>{{ wpis.blad }}</td>
+                        <td>{{ wpis.grupa_bledow }}</td>
                         {% if user.is_authenticated %}
                         <td>
 
@@ -45,6 +47,7 @@
                     <tr>
                         <th class="th-sm">#</th>
                         <th class="th-sm">Błąd</th>
+                        <th class="th-sm">Grupa</th>
                         {% if user.is_authenticated %}
                         <th class="th-sm">#</th>
                         {% endif %}

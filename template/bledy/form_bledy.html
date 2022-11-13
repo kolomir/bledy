@@ -15,6 +15,15 @@
                         <label class="control-label" for="id_blad">Nazwa błędu</label>
                         <input maxlength="100" type="text" id="id_blad" name="blad" class=" form-control" required>
                     </div>
+                    <div class="form-row mb-3 md-form">
+                        <select name="grupa_bledow" class="mdb-select md-form" id="id_grupa_bledow" required  searchable="Search here..">
+                            <option value="" disabled selected>Wybierz grupę</option>
+                            {% for result in grupa_bledow %}
+                            <option value="{{ result.id }}">{{ result.nazwa }}</option>
+                            {% endfor %}
+                        </select>
+                        <label class="mdb-main-label">Wybierz grupę</label>
+                    </div>
                     <div class="form-group">
                         <input type="hidden" name="aktywny" value="1">
                         <button type="submit" class="btn btn-outline-primary btn-rounded waves-effect">Zapisz <i class="fas fa-save fa-lg"></i></button>

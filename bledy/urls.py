@@ -6,7 +6,8 @@ from .views import wszystkie_wpisy, nowy_klient, edytuj_klient, wpisyKlient, usu
                 nowa_wiazka, edytuj_wiazka, wpisyWiazka, usun_wiazke, przywroc_wiazke, \
                 nowy_pracownik, edytuj_pracownik, wpisyPracownik, usun_pracownik, przywroc_pracownik, \
                 nowy_blad_wpis, edytuj_blad_wpis, usun_blad_wpis, przywroc_blad_wpis, filtrowanie, \
-                login_request, logout_request, upload_file_view
+                login_request, logout_request, upload_file_view, nowa_grupa_bledow, edytuj_grupa_bledow, \
+                usun_grupa_bledow, przywroc_grupa_bledow, wpisyGrupaBledow
 
 
 urlpatterns = [
@@ -19,10 +20,13 @@ urlpatterns = [
     path('wiazkaForm/', nowa_wiazka, name='wiazkaForm'),
     path('pracownikForm/', nowy_pracownik, name='pracownikForm'),
     path('bledy_wpisForm/', nowy_blad_wpis, name='bledy_wpisForm'),
+    path('bledy_wpisForm/', nowy_blad_wpis, name='bledy_wpisForm'),
+    path('grupy_bledowForm/', nowa_grupa_bledow, name='grupy_bledowForm'),
 
     #= Edycja =============================================
     path('klienciFormedytuj/<int:id>/', edytuj_klient, name='klienciFormedytuj'),
     path('grupyFormedytuj/<int:id>/', edytuj_grupa, name='grupyFormedytuj'),
+    path('grupy_bledowFormedytuj/<int:id>/', edytuj_grupa_bledow, name='grupy_bledowFormedytuj'),
     path('dzialyFormedytuj/<int:id>/', edytuj_dzial, name='dzialyFormedytuj'),
     path('bledyFormedytuj/<int:id>/', edytuj_blad, name='bledyFormedytuj'),
     path('wiazkaFormedytuj/<int:id>/', edytuj_wiazka, name='wiazkaFormedytuj'),
@@ -32,6 +36,7 @@ urlpatterns = [
     #= Zestawienie ========================================
     path('klienci/', wpisyKlient, name='klienci'),
     path('grupyrobocze/', wpisyGrupaRobocza, name='grupyrobocze'),
+    path('grupybledow/', wpisyGrupaBledow, name='grupybledow'),
     path('dzialy/', wpisyDzialy, name='dzialy'),
     path('bledy/', wpisyBlad, name='bledy'),
     path('wiazka/', wpisyWiazka, name='wiazka'),
@@ -41,6 +46,7 @@ urlpatterns = [
     #= Kasowanie ==========================================
     path('usun_klient/<int:id>/', usun_klient, name='usun_klient'),
     path('usun_grupa/<int:id>/', usun_grupa, name='usun_grupa'),
+    path('usun_grupa_bledow/<int:id>/', usun_grupa_bledow, name='usun_grupa_bledow'),
     path('usun_dzial/<int:id>/', usun_dzial, name='usun_dzial'),
     path('usun_blad/<int:id>/', usun_blad, name='usun_blad'),
     path('usun_wiazke/<int:id>/', usun_wiazke, name='usun_wiazke'),
@@ -50,6 +56,7 @@ urlpatterns = [
     #= Przywracanie =======================================
     path('przywroc_klient/<int:id>/', przywroc_klient, name='przywroc_klient'),
     path('przywroc_grupa/<int:id>/', przywroc_grupa, name='przywroc_grupa'),
+    path('przywroc_grupa_bledow/<int:id>/', przywroc_grupa_bledow, name='przywroc_grupa_bledow'),
     path('przywroc_dzial/<int:id>/', przywroc_dzial, name='przywroc_dzial'),
     path('przywroc_blad/<int:id>/', przywroc_blad, name='przywroc_blad'),
     path('przywroc_wiazke/<int:id>/', przywroc_wiazke, name='przywroc_wiazke'),

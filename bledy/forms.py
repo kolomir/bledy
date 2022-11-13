@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Bledy, Csv
+from .models import Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Bledy, Csv, GrupaBledow
 
 
 #= KLIENCI =======================================================
@@ -15,6 +15,21 @@ class SkasowacKlienci(ModelForm):
         model = Klient
         fields = [
             'aktywny',
+        ]
+
+
+#= Grupa Błędów =======================================================
+class GrupaBledowForm(ModelForm):
+    class Meta:
+        model = GrupaBledow
+        fields = ['nazwa','aktywna']
+
+
+class SkasowacGrupaBledow(ModelForm):
+    class Meta:
+        model = GrupaBledow
+        fields = [
+            'aktywna',
         ]
 
 
@@ -52,7 +67,7 @@ class SkasowacDzial(ModelForm):
 class BladForm(ModelForm):
     class Meta:
         model = RodzajeBledu
-        fields = ['blad','aktywny']
+        fields = ['blad','grupa_bledow','aktywny']
 
 
 class SkasowacBlad(ModelForm):

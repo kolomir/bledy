@@ -1,12 +1,19 @@
 from django.contrib import admin
-from .models import RodzajeBledu, GrupaRobocza, Klient, Wiazka, Dzial, Pracownik, Autor, Bledy, RodzajReklamacji, Csv
+from .models import RodzajeBledu, GrupaRobocza, Klient, Wiazka, Dzial, Pracownik, Autor, Bledy, RodzajReklamacji, Csv, GrupaBledow
 
 
 @admin.register(RodzajeBledu)
 class BladAdmin(admin.ModelAdmin):
-    list_display = ('blad', 'aktywny')
-    list_filter = ('aktywny',)
+    list_display = ('blad', 'grupa_bledow', 'aktywny')
+    list_filter = ('grupa_bledow', 'aktywny',)
     search_fields = ('blad', 'aktywny')
+
+
+@admin.register(GrupaBledow)
+class GrupaBledowAdmin(admin.ModelAdmin):
+    list_display = ('nazwa', 'aktywna')
+    list_filter = ('aktywna',)
+    search_fields = ('nazwa', 'aktywna')
 
 
 @admin.register(GrupaRobocza)

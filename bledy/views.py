@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bledy, Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Autor, RodzajReklamacji, Csv
+from .models import Bledy, Klient, GrupaRobocza, Dzial, RodzajeBledu, Wiazka, Pracownik, Autor, RodzajReklamacji, Csv, GrupaBledow
 from .forms import KlientForm, SkasowacKlienci, GrupaRoboczaForm, SkasowacGrupaRobocza, DzialForm, SkasowacDzial, \
-                BladForm, SkasowacBlad, WiazkaForm, SkasowacWiazka, PracownikForm, SkasowacPracownik, BledyForm, SkasowacBledy, CsvModelForm
+                BladForm, SkasowacBlad, WiazkaForm, SkasowacWiazka, PracownikForm, SkasowacPracownik, BledyForm, SkasowacBledy, CsvModelForm, GrupaBledowForm, SkasowacGrupaBledow
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import csv
@@ -102,6 +102,82 @@ def wpisyKlient(request):
         'klienci': klienci
     }
     return render(request,'bledy/klienci.html',context)
+
+
+@login_required
+def nowa_grupa_bledow(request):
+    form_grupy_bledow = GrupaBledowForm(request.POST or None, request.FILES or None)
+
+    if form_grupy_bledow.is_valid():
+        form_grupy_bledow.save()
+        return redirect(wpisyGrupaBledow)
+
+    context = {
+        'form_grupy_bledow': form_grupy_bledow
+    }
+
+    return render(request, 'bledy/form_grupa_bledow.html', context)
+
+
+@login_required
+def edytuj_grupa_bledow(request, id):
+    wpis = get_object_or_404(GrupaBledow, pk=id)
+
+    form_grupy_bledow = GrupaBledowForm(request.POST or None, request.FILES or None, instance=wpis)
+
+    if form_grupy_bledow.is_valid():
+        form_grupy_bledow.save()
+        return redirect(wpisyGrupaBledow)
+
+    context = {
+        'form_grupy_bledow': form_grupy_bledow,
+        'wpis': wpis
+    }
+
+    return render(request, 'bledy/form_grupa_bledow_ed.html', context)
+
+
+@login_required
+def usun_grupa_bledow(request, id):
+    wpis = get_object_or_404(GrupaBledow, pk=id)
+    form_wpis = SkasowacGrupaBledow(request.POST or None, request.FILES or None, instance=wpis)
+
+    if form_wpis.is_valid():
+        kasuj = form_wpis.save(commit=False)
+        kasuj.aktywna = 0
+        kasuj.save()
+        return redirect(wpisyGrupaBledow)
+
+    context = {
+        'wpis': wpis
+    }
+    return render(request, 'bledy/potwierdz_grupa_bledow.html', context)
+
+
+@login_required
+def przywroc_grupa_bledow(request, id):
+    wpis = get_object_or_404(GrupaBledow, pk=id)
+    form_wpis = SkasowacGrupaBledow(request.POST or None, request.FILES or None, instance=wpis)
+
+    if form_wpis.is_valid():
+        kasuj = form_wpis.save(commit=False)
+        kasuj.aktywna = 1
+        kasuj.save()
+        return redirect(wpisyGrupaBledow)
+
+    context = {
+        'wpis': wpis
+    }
+    return render(request, 'bledy/potwierdz_grupa_bledow.html', context)
+
+
+def wpisyGrupaBledow(request):
+    grupy_bledow = GrupaBledow.objects.all().order_by('nazwa')
+
+    context = {
+        'grupy_bledow': grupy_bledow
+    }
+    return render(request, 'bledy/grupybledow.html', context)
 
 
 @login_required
@@ -259,13 +335,19 @@ def wpisyDzialy(request):
 @login_required
 def nowy_blad(request):
     form_blad = BladForm(request.POST or None, request.FILES or None)
+    grupa_bledow = GrupaBledow.objects.filter(aktywna=True).order_by('nazwa')
 
     if form_blad.is_valid():
+        bl = request.GET.get('blad')
+        gr = request.GET.get('grupa_bledow')
+        print('bl: ' + str(bl))
+        print('gr: ' + str(gr))
         form_blad.save()
         return redirect(wpisyBlad)
 
     context = {
-        'form_blad': form_blad
+        'form_blad': form_blad,
+        'grupa_bledow': grupa_bledow
     }
 
     return render(request, 'bledy/form_bledy.html', context)
@@ -274,6 +356,7 @@ def nowy_blad(request):
 @login_required
 def edytuj_blad(request, id):
     wpis = get_object_or_404(RodzajeBledu, pk=id)
+    grupa_bledow = GrupaBledow.objects.filter(aktywna=True).order_by('nazwa')
 
     form_blad = BladForm(request.POST or None, request.FILES or None, instance=wpis)
 
@@ -283,6 +366,7 @@ def edytuj_blad(request, id):
 
     context = {
         'form_blad': form_blad,
+        'grupa_bledow': grupa_bledow,
         'wpis': wpis
     }
 
@@ -523,6 +607,7 @@ def nowy_blad_wpis(request):
     return render(request, 'bledy/form_bledy_wpisy.html', context)
 
 
+
 @login_required
 def edytuj_blad_wpis(request, id):
     wpis = get_object_or_404(Bledy, pk=id)
@@ -593,12 +678,15 @@ def is_valid_queryparam(param):
 
 @login_required
 def filtrowanie(request):
-    qs = Bledy.objects.all()
+    qs = Bledy.objects.filter(skasowany=False)
+    #qs = Bledy.objects.all()
+    #dzial = Dzial.objects.filter(aktywny=True).order_by('dzial')
     nr_wiazki_contains_query = request.GET.get('nr_wiazki_contains')
     nr_grupy_roboczej_contains_query = request.GET.get('nr_grupy_roboczej_contains')
     nr_zlecenia_contains_query = request.GET.get('nr_zlecenia_contains')
     nr_budujacego_contains_query = request.GET.get('nr_budujacego_contains')
     blad_contains_query = request.GET.get('blad_contains')
+    grupabledow_contains_query = request.GET.get('grupa_bledow_contains')
     klient_contains_query = request.GET.get('klient_contains')
     data_od = request.GET.get('data_od')
     data_do = request.GET.get('data_do')
@@ -617,6 +705,8 @@ def filtrowanie(request):
         qs = qs.filter(nr_budujacego__nr_pracownika__exact=nr_budujacego_contains_query)
     if is_valid_queryparam(blad_contains_query):
         qs = qs.filter(blad__blad__icontains=blad_contains_query)
+    if is_valid_queryparam(grupabledow_contains_query):
+        qs = qs.select_related('blad').filter(blad__grupa_bledow__nazwa__icontains=grupabledow_contains_query)
     if is_valid_queryparam(klient_contains_query):
         qs = qs.select_related('nr_wiazki').filter(nr_wiazki__nazwa_klienta__nazwa_klienta__icontains=klient_contains_query)
     if is_valid_queryparam(data_od):
@@ -647,6 +737,7 @@ def filtrowanie(request):
                 'ilosc_skontrolowanych',
                 'ilosc_bledow',
                 'blad',
+                'GrupaBledow',
                 'opis',
                 'autor_wpisu',
                 'data_dodania'
@@ -666,6 +757,7 @@ def filtrowanie(request):
                     obj.ilosc_skontrolowanych,
                     obj.ilosc_bledow,
                     obj.blad,
+                    obj.blad.grupa_bledow,
                     obj.opis,
                     obj.autor_wpisu,
                     obj.data_dodania

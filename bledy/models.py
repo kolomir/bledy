@@ -13,8 +13,20 @@ class Klient(models.Model):
         return self.nazwa_klienta
 
 
+class GrupaBledow(models.Model):
+    nazwa = models.CharField(max_length=100, unique=True)
+    aktywna = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nazwa
+
+
 class RodzajeBledu(models.Model):
     blad = models.CharField(max_length=100, unique=True)
+    grupa_bledow = models.ForeignKey(GrupaBledow, on_delete=models.CASCADE)
+    #czy_test = models.BooleanField(default=False)
+    #czy_produkcja_cz = models.BooleanField(default=False)
+    #czy_produkcja_bs = models.BooleanField(default=False)
     aktywny = models.BooleanField(default=True)
 
     def __str__(self):
